@@ -1,5 +1,5 @@
 import 'package:counter/home_presenter.dart';
-import 'package:counter/interface.dart';
+import 'package:counter/counter_interface.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-
-      home:  MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -25,8 +24,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> implements Interface{
-
+class _MyHomePageState extends State<MyHomePage> implements Interface {
   late HomePresenter homePresenter;
   ValueNotifier<int> valueNotifier = ValueNotifier(0);
 
@@ -35,36 +33,34 @@ class _MyHomePageState extends State<MyHomePage> implements Interface{
     homePresenter = HomePresenter(this);
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: Center(
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Text(
-          'You have pushed the button this many times:',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            ValueListenableBuilder<int>(
+              builder: (BuildContext context, int value, Widget? child) {
+                return Text('$value');
+              },
+              valueListenable: valueNotifier,
+              child: null,
+            )
+          ],
         ),
-        ValueListenableBuilder<int>(
-          builder: (BuildContext context, int value, Widget? child) {
-            return Text('$value');
-          },
-          valueListenable: valueNotifier,
-          child: null,
-        )
-      ],
-    ),
-    ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: homePresenter.changeNumber(valueNotifier.value + 1),
+        onPressed: () => homePresenter.changeNumber(valueNotifier.value + 1),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), //
     );
   }
 
